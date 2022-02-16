@@ -30,6 +30,9 @@ public class UserPrincipal implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// Take all the getAuthorities, which is a String array, and map through 
+		// each one of them and create a new object of SimpleGrantedAuthority and
+		// collect them to a list of string.
 		return stream(this.user.getAuthorities()).map(SimpleGrantedAuthority::new)
 				.collect(Collectors.toList());
 	}
