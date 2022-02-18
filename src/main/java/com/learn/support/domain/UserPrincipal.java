@@ -1,10 +1,11 @@
 package com.learn.support.domain;
 
-import static org.junit.jupiter.api.DynamicTest.stream;
-
+import static java.util.Arrays.stream;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 // This domain is where I can map isActive, authorities and isNotLocked from 
@@ -21,6 +22,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 @SuppressWarnings("serial")
 public class UserPrincipal implements UserDetails {
+	
 	private User user;
 	
 	public UserPrincipal(User user) {

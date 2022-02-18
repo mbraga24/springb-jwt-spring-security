@@ -13,6 +13,8 @@ import javax.persistence.Id;
 @Entity	// mark class as a JPA Entity
 public class User implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+	
 	//	once the application runs, JPA will pick up on the annotations
 	//	and will map the User class into a database with all of the 
 	//	fields below as the database row.
