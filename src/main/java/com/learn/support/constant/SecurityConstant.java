@@ -51,5 +51,14 @@ public class SecurityConstant {
 				"/user/register", 
 				"/user/resetpassword/**", 
 				"/user/image/**"};
+	
+	//	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			ADD DEPENDENCY TO THE POM FILE THAT WILL
+	//			USE A LIBRATY TO GENERATE A TOKEN
+	//			LINK: https://github.com/auth0/java-jwt
+	//	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	
+	
+	
 }
 
