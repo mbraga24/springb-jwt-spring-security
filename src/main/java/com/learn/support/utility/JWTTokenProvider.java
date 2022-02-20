@@ -20,7 +20,7 @@ public class JWTTokenProvider {
 	//			and that will be retrieved from that secure service any time you need it. ***
 	
 	// @Value annotation will grab the value of the property from the property/yml file.
-	@Value("jwt.secret")
+	@Value("${jwt.secret}")
 	private String secret;
 	
 	// Method to generate the token.
