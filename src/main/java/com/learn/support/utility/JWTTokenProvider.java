@@ -14,12 +14,14 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -27,6 +29,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.learn.support.domain.UserPrincipal;
 
+@Component
 public class JWTTokenProvider {
 	
 	// The secret will be a random string to code and/or decode the token.
@@ -72,6 +75,16 @@ public class JWTTokenProvider {
 		userPasswordAuthToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request)); // Setting up information about the current user in the Spring Security context
 		return userPasswordAuthToken;
 	}
+
+	public boolean isTokenValid(String username, String token) {
+		JWTVerifier verifier = getJWTVerifier();
+		return StringUtils.isNotEmpty(username) && !isTokenExpired(verifier, token);
+	}
+	
+	public String getSubject(String token) {
+		JWTVerifier verifier = getJWTVerifier();
+		return verifier.verify(token).getSubject();
+	}
 	
 	//	**********************************************
 	//					HELPER METHODS
@@ -80,12 +93,18 @@ public class JWTTokenProvider {
 	private String[] getClaimsFromToken(String token) {
 		JWTVerifier verifier = getJWTVerifier();
 		return verifier.verify(token).getClaim(AUTHORITIES).asArray(String.class);
+		
+		// =================> Code for getClaim() from JWTDecoder Class
+		// @Override
+		// public Claim getClaim(String name) {
+		//  return payload.getClaim(name);
+		// }
 	}
 	
-	//	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//					LIBRARY
-	//		LINK: https://github.com/auth0/java-jwt
-	//	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	private boolean isTokenExpired(JWTVerifier verifier, String token) {
+		Date expiration = verifier.verify(token).getExpiresAt();
+		return expiration.before(new Date());
+	}
 	
 	private JWTVerifier getJWTVerifier() {
 		JWTVerifier verifier;
@@ -107,7 +126,5 @@ public class JWTTokenProvider {
 		}
 		return authorities.toArray(new String[0]);
 	}
-	
-	
 
 }
