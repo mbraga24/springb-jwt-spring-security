@@ -2,9 +2,9 @@ package com.learn.support.utility;
 
 import static com.learn.support.constant.SecurityConstant.AUTHORITIES;
 import static com.learn.support.constant.SecurityConstant.EXPIRATION_TIME;
+import static com.learn.support.constant.SecurityConstant.TOKEN_CANNOT_BE_VERIFIED;
 import static com.learn.support.constant.SecurityConstant.YOUR_SUPPORT_CO;
 import static com.learn.support.constant.SecurityConstant.YOUR_SUPPORT_CO_ADMINISTRATION;
-import static com.learn.support.constant.SecurityConstant.TOKEN_CANNOT_BE_VERIFIED;
 import static java.util.Arrays.stream;
 
 import java.util.ArrayList;
@@ -12,9 +12,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -56,6 +61,22 @@ public class JWTTokenProvider {
 		return stream(permissions).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 	}
 	
+	// Method to get the authentication of the user
+	// If the token is correct, the application needs to get the authentication of the user from 
+	// Spring Security and set that authentication in the Spring Security Context.  
+	// Once the application has this authentication it will be able to set it to the Spring Security context to allow 
+	// it to process the user's request.
+	public Authentication getAuthentication(String username, List<GrantedAuthority> authorities, HttpServletRequest request) {
+		UsernamePasswordAuthenticationToken userPasswordAuthToken = 
+				new UsernamePasswordAuthenticationToken(username, null, authorities);
+		userPasswordAuthToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request)); // Setting up information about the current user in the Spring Security context
+		return userPasswordAuthToken;
+	}
+	
+	//	**********************************************
+	//					HELPER METHODS
+	//	**********************************************
+	
 	private String[] getClaimsFromToken(String token) {
 		JWTVerifier verifier = getJWTVerifier();
 		return verifier.verify(token).getClaim(AUTHORITIES).asArray(String.class);
@@ -65,10 +86,6 @@ public class JWTTokenProvider {
 	//					LIBRARY
 	//		LINK: https://github.com/auth0/java-jwt
 	//	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	
-	//	**********************************************
-	//					HELPER METHODS
-	//	**********************************************
 	
 	private JWTVerifier getJWTVerifier() {
 		JWTVerifier verifier;
