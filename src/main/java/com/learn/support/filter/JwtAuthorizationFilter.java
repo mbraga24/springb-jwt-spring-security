@@ -20,7 +20,6 @@ import com.learn.support.utility.JWTTokenProvider;
 
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
-	@SuppressWarnings("unused")
 	private JWTTokenProvider jwtTokenProvider;
 	
 	public JwtAuthorizationFilter(JWTTokenProvider jwtTokenProvider) {
