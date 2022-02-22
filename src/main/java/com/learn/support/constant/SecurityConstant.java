@@ -1,5 +1,10 @@
 package com.learn.support.constant;
 
+//===================================> SecurityConstant <================================
+// The SecurityConstant class will hold security constants to be applied throughout the 
+// application
+//=======================================================================================
+
 public class SecurityConstant {
 	
 	public static final long EXPIRATION_TIME = 432_000_000; // 5 days in milliseconds
@@ -57,8 +62,5 @@ public class SecurityConstant {
 	//			USE A LIBRATY TO GENERATE A TOKEN
 	//			LINK: https://github.com/auth0/java-jwt
 	//	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	
-	
-	
 }
 
