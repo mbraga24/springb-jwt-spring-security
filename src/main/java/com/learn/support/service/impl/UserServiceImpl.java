@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,6 +21,7 @@ import com.learn.support.service.UserService;
 
 @Service
 @Transactional // manage propagation whenever the service is dealing more transactions
+@Qualifier("UserDetailsService")
 public class UserServiceImpl implements UserService, UserDetailsService {
 
 	private Logger LOGGER = LoggerFactory.getLogger(getClass()); // UserServiceImpl.class()
