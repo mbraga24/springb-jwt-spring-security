@@ -29,12 +29,17 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.learn.support.domain.UserPrincipal;
 
+//=====================================> JWTTokenProvider <=====================================
+// The JWTTokenProvider will be used to generate tokens, verify user token, user information 
+// and all helper methods to assist with these tasks.
+//==============================================================================================
+
 @Component
 public class JWTTokenProvider {
 	
-	// The secret will be a random string to code and/or decode the token.
-	// ***	Normally the secret will be in a secure service in a property file
-	//			and that will be retrieved from that secure service any time you need it. ***
+	// The "secret" will be a random string to code and/or decode the token.
+	// ***	Normally the secret will be in a secure server in a property file
+	//			and that will be retrieved from that secure server any time you need it. ***
 	
 	// @Value annotation will grab the value of the property from the property/yml file.
 	// ** Interpolate string **
