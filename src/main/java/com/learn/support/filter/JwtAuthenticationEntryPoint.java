@@ -39,8 +39,6 @@ public class JwtAuthenticationEntryPoint extends Http403ForbiddenEntryPoint {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.writeValue(outputStream, httpResponse);
 		outputStream.flush();
-		 
-	
 	}
 	 
 }
