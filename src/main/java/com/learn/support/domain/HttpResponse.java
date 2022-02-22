@@ -2,6 +2,11 @@ package com.learn.support.domain;
 
 import org.springframework.http.HttpStatus;
 
+//===================================> HttpResponse <===================================
+// ADD DESCRIPTION HERE ADD DESCRIPTION HERE ADD DESCRIPTION HERE ADD DESCRIPTION HERE 
+//
+//======================================================================================
+
 public class HttpResponse {
 	
 	private int httpStatusCode;
