@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.learn.support.constant.SecurityConstant;
@@ -21,6 +22,7 @@ import com.learn.support.domain.HttpResponse;
 // will override the generic response sent to the user when they are not authenticated.
 //=========================================================================================================
 
+@Component
 public class JwtAuthenticationEntryPoint extends Http403ForbiddenEntryPoint {
 	
 	@Override
