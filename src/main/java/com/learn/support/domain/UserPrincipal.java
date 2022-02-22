@@ -8,7 +8,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-// This domain is where I can map isActive, authorities and isNotLocked from 
+//================================> UserPrincipal <================================
+// This class is where I can map isActive, authorities and isNotLocked from 
 // the User class to the Spring user in the security context.
 
 // UserDetails comes from Spring Security - it provides core user information
@@ -19,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 // Security can map those values and determine if they're correct or not. Other 
 // methods I might need to set a generic value to guarantee the application will 
 // run.
+//==================================================================================
 
 @SuppressWarnings("serial")
 public class UserPrincipal implements UserDetails {
