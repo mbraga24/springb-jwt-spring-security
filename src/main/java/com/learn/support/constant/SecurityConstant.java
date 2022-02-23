@@ -51,12 +51,14 @@ public class SecurityConstant {
 	public static final String OPTIONS_HTTP_METHOD = "OPTIONS";
 	
 	//	PUBLIC_URLS 
-	public static final String[] PUBLIC_URLS = {
-				"/user/login", 
-				"/user/register", 
-				"/user/resetpassword/**", 
-				"/user/image/**"};
-	
+//	public static final String[] PUBLIC_URLS = {
+//				"/user/login", 
+//				"/user/register", 
+//				"/user/resetpassword/**", 
+//				"/user/image/**"};
+//		
+	public static final String[] PUBLIC_URLS = {"**"};
+
 	//	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			ADD DEPENDENCY TO THE POM FILE THAT WILL
 	//			USE A LIBRATY TO GENERATE A TOKEN
