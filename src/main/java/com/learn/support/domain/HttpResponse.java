@@ -1,6 +1,10 @@
 package com.learn.support.domain;
 
+import java.util.Date;
+
 import org.springframework.http.HttpStatus;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 //===================================> HttpResponse <===================================
 // ADD DESCRIPTION HERE ADD DESCRIPTION HERE ADD DESCRIPTION HERE ADD DESCRIPTION HERE 
@@ -9,6 +13,8 @@ import org.springframework.http.HttpStatus;
 
 public class HttpResponse {
 	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yyyy hh:mm:ss", timezone = "America/New_York")
+	private Date timeStamp;
 	private int httpStatusCode;
 	private HttpStatus httpStatus;
 	private String reason;
@@ -18,10 +24,19 @@ public class HttpResponse {
 	
 	public HttpResponse(int httpStatusCode, HttpStatus httpStatus, String reason, String message) {
 		super();
+		this.timeStamp = new Date(); // any time an object is created the time will be whenever the object is being created
 		this.httpStatusCode = httpStatusCode;
 		this.httpStatus = httpStatus;
 		this.reason = reason;
 		this.message = message;
+	}
+
+	public Date getTimeStamp() {
+		return timeStamp;
+	}
+
+	public void setTimeStamp(Date timeStamp) {
+		this.timeStamp = timeStamp;
 	}
 
 	public int getHttpStatusCode() {
