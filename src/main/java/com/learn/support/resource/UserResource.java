@@ -8,14 +8,14 @@ import com.learn.support.exception.model.ExceptionHandling;
 import com.learn.support.exception.model.UserNotFoundException;
 
 @RestController
-@RequestMapping(value = "/user")
+@RequestMapping(path = { "/", "/user" })
 public class UserResource extends ExceptionHandling {
 
 	@GetMapping("/home")
 	public String showUser() throws UserNotFoundException {
 		
 		throw new UserNotFoundException("User not found.");
-//		return "Application Works";
+        // return "Application Works";
 	}
 	
 }
