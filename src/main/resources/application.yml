@@ -3,6 +3,10 @@ jwt:
 
 server:
  port: 8081
+# error:
+#  whitelabel:
+#   enabled: false # this setting will stop Spring from sending the whitelabel error page and will allow the servlet handle the 404 not found.
+# White label error page is coming from: ErrorMvcAutoConfiguration
 
 spring:
  datasource:
