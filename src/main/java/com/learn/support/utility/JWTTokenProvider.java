@@ -30,8 +30,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.learn.support.domain.UserPrincipal;
 
 //=====================================> JWTTokenProvider <=====================================
-// The JWTTokenProvider will be used to generate tokens, verify user token, user information 
-// and all helper methods to assist with these tasks.
+// The JWTTokenProvider will be used to generate tokens, verify user token and user information.
 //==============================================================================================
 
 @Component
