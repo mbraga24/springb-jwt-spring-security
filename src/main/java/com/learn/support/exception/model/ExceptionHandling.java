@@ -88,7 +88,7 @@ public class ExceptionHandling implements ErrorController {
 	
 	@ExceptionHandler(IOException.class)
 	public ResponseEntity<HttpResponse> iOException(IOException exception) {
-		LOGGER.error(exception.getMessage());
+		LOGGER.error("INTERNAL SERVER ===> " + exception.getMessage());
 		return createHttpResponse(HttpStatus.INTERNAL_SERVER_ERROR, ERROR_PROCESSING_FILE);
 	}
 	
