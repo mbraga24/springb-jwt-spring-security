@@ -1,7 +1,10 @@
 package com.learn.support.domain;
 
 import static java.util.Arrays.stream;
+
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -34,11 +37,19 @@ public class UserPrincipal implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// Take all the getAuthorities, which is a String array, and map through 
-		// each one of them and create a new object of SimpleGrantedAuthority and
-		// collect them to a list of string.
-		return stream(this.user.getAuthorities()).map(SimpleGrantedAuthority::new)
+		// Take all user's authorities with getAuthorities(), which is a String array, 
+		// and map through each one of them and create a new object of 
+		// SimpleGrantedAuthority and collect them to a list of string.
+		
+		List<SimpleGrantedAuthority> result = new ArrayList<>();
+		result = stream(this.user.getAuthorities())
+				.map(SimpleGrantedAuthority::new)
 				.collect(Collectors.toList());
+		System.out.println("===> UserPrincipal Class: getAuthorities() <===");
+		System.out.println(result);
+		return result;
+		
+		// return stream(this.user.getAuthorities()).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 	}
 
 	@Override
