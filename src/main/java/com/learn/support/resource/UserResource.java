@@ -1,30 +1,51 @@
 package com.learn.support.resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.learn.support.constant.SecurityConstant;
 import com.learn.support.domain.User;
+import com.learn.support.domain.UserPrincipal;
 import com.learn.support.exception.model.EmailExistException;
 import com.learn.support.exception.model.ExceptionHandling;
 import com.learn.support.exception.model.UserNotFoundException;
 import com.learn.support.exception.model.UsernameExistException;
 import com.learn.support.service.UserService;
+import com.learn.support.utility.JWTTokenProvider;
 
 @RestController
 @RequestMapping(path = { "/", "/user" })
 public class UserResource extends ExceptionHandling {
 
 	private UserService userService;
+	private AuthenticationManager authenticationManager;
+	private JWTTokenProvider jwtTokenProvider;
+	private SecurityConstant securityConstant;
 	
 	@Autowired
-	public UserResource(UserService userService) {
+	public UserResource(UserService userService, AuthenticationManager authenticationManager,
+			JWTTokenProvider jwtTokenProvider) {
 		super();
 		this.userService = userService;
+		this.authenticationManager = authenticationManager;
+		this.jwtTokenProvider = jwtTokenProvider;
+	}
+
+	@PostMapping("/login")
+	public ResponseEntity<User> login(@RequestBody User user) {
+		authenticateUser(user.getUsername(), user.getPassword());
+		User loginUser = userService.findUserByUsername(user.getUsername());
+		UserPrincipal userPrincipal = new UserPrincipal(loginUser);
+		HttpHeaders jwtHeader = getJwtHeader(userPrincipal);
+		return new ResponseEntity<>(loginUser, jwtHeader, HttpStatus.OK);
 	}
 
 	@PostMapping("/register")	
@@ -33,4 +54,14 @@ public class UserResource extends ExceptionHandling {
 		return new ResponseEntity<>(newUser, HttpStatus.OK);
 	}
 	
+	private void authenticateUser(String username, String password) {
+		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+	}
+	
+	@SuppressWarnings("static-access")
+	private HttpHeaders getJwtHeader(UserPrincipal userPrincipal) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add(securityConstant.JWT_TOKEN_HEADER, jwtTokenProvider.generateJwtToken(userPrincipal));
+		return headers;
+	}
 }
