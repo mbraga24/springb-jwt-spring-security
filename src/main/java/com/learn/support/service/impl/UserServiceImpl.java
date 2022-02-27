@@ -16,8 +16,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-//import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.learn.support.constant.UserImplConstant;
 import com.learn.support.domain.User;
 import com.learn.support.domain.UserPrincipal;
 import com.learn.support.enumeration.Role;
@@ -45,16 +46,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	// The loadUserByUsername method gets called whenever Spring Security is trying to check the
 	// authentication of the user. The method needs to be overridden. 
 	
+	@SuppressWarnings("static-access")
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepository.findUserByUsername(username);
 		if (user == null) {
-			LOGGER.error("USER NOT FOUND BY USERNAME: " + username);
-			throw new UsernameNotFoundException("User not found by username: " + username);
+			LOGGER.error(UserImplConstant.NO_USER_FOUND_BY_USERNAME + username);
+			throw new UsernameNotFoundException(UserImplConstant.NO_USER_FOUND_BY_USERNAME + username);
 		} else {
 			user.setLastLoginDateDisplay(user.getLastLoginDate());
 			user.setLastLoginDate(new Date());
+			userRepository.save(user);
 			UserPrincipal userPrincipal = new UserPrincipal(user); // because UserPrincipal extends UserDetails I can return userPrincipal as UserDetails
+			LOGGER.info(UserImplConstant.RETURNING_FOUND_USER_BY_USERNAME + username);
 			return userPrincipal;
 		}
 		
@@ -77,18 +81,62 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		user.setNotLocked(true);
 		user.setRole(Role.ROLE_USER.name()); // setRole() takes a String. ROLE_USER is an enum and name() method will convert the enum into a String.
 		user.setAuthorities(Role.ROLE_USER.getAuthorities());
-		// user.setProfileImageUrl(getTemporaryProfileImageUrl());
+		user.setProfileImageUrl(getTemporaryProfileImageUrl().toString());
 		userRepository.save(user); // call userRepository to save the user in the database
 		LOGGER.info("New user password: " + password);
 		return user;
 	}
 
-	//	private Object getTemporaryProfileImageUrl() {
-	//		// ServletUriComponentsBuilder will return whatever the URL is for the service.
-	//		// e.g.: if the application is deployed to Google.com the based URL will be 
-	//		// www.google.com/...
-	//		return ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/image/profile/temp").toUriString();
-	//	}
+	// This method will be very generic to be applicable for when someone is either creating a new acccount 
+	// or updating their account.
+	@SuppressWarnings("static-access")
+	private User validateNewUsernameAndEmail(String currentUsername, String newUsername, String email) throws UsernameExistException, UserNotFoundException, EmailExistException {
+		User userByNewUsername = findUserByUsername(newUsername);
+		User userByNewEmail = findUserByEmail(email);
+		if (StringUtils.isNotBlank(currentUsername)) {
+			User currentUser = findUserByUsername(currentUsername);
+			if (currentUser == null) {
+				throw new UserNotFoundException(UserImplConstant.NO_USER_FOUND_BY_USERNAME + currentUsername);
+			}
+			if (userByNewUsername != null && !currentUser.getId().equals(userByNewUsername.getId())) {
+				throw new UsernameExistException(UserImplConstant.USERNAME_ALREADY_EXISTS);
+			}
+			if (userByNewEmail != null && !currentUser.getId().equals(userByNewEmail.getId())) {
+				throw new EmailExistException(UserImplConstant.EMAIL_ALREADY_EXIST);
+			}
+			return currentUser;
+		} else {
+			if (userByNewUsername != null) {
+				throw new UsernameExistException(UserImplConstant.USERNAME_ALREADY_EXISTS);
+			}
+			if (userByNewEmail != null) {
+				throw new EmailExistException(UserImplConstant.EMAIL_ALREADY_EXIST);
+			}
+			return null;
+		}
+	}
+	
+	private Object getTemporaryProfileImageUrl() {
+		// ServletUriComponentsBuilder will return whatever the URL is for the service.
+		// e.g.: if the application is deployed to Google.com the based URL will be 
+		// www.google.com/...
+		return ServletUriComponentsBuilder.fromCurrentContextPath().path(UserImplConstant.DEFAULT_USER_IMAGE_PROFILE).toUriString();
+	}
+	
+	@Override
+	public List<User> getUsers() {
+		return userRepository.findAll();
+	}
+
+	@Override
+	public User findUserByUsername(String username) {
+		return userRepository.findUserByUsername(username);
+	}
+
+	@Override
+	public User findUserByEmail(String email) {
+		return userRepository.findUserByEmail(email);
+	}
 
 	private String encodePassword(String password) {
 		return passwordEncoder.encode(password);
@@ -100,51 +148,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	private String generateUserId() {
 		return RandomStringUtils.randomNumeric(10);
-	}
-
-	// This method will be very generic to be applicable for when someone is either creating a new acccount 
-	// or updating their account.
-	private User validateNewUsernameAndEmail(String currentUsername, String newUsername, String email) throws UsernameExistException, UserNotFoundException, EmailExistException {
-		if (StringUtils.isNotBlank(currentUsername)) {
-			User currentUser = findUserByUsername(currentUsername);
-			if (currentUser == null) {
-				throw new UserNotFoundException("No user found by username: " + currentUsername);
-			}
-			User userByNewUsername = findUserByUsername(newUsername);
-			if (userByNewUsername != null && !currentUser.getId().equals(userByNewUsername.getId())) {
-				throw new UsernameExistException("Username already exists");
-			}
-			User userByNewEmail = findUserByEmail(email);
-			if (userByNewEmail != null && !currentUser.getId().equals(userByNewEmail.getId())) {
-				throw new EmailExistException("Email already exist");
-			}
-			return currentUser;
-		} else {
-			User userByUsername = findUserByUsername(newUsername);
-			if (userByUsername != null) {
-				throw new UsernameExistException("Username already exists");
-			}
-			User userByEmail = findUserByEmail(email);
-			if (userByEmail != null) {
-				throw new EmailExistException("Email already exist");
-			}
-			return null;
-		}
-	}
-
-	@Override
-	public List<User> getUsers() {
-		return null;
-	}
-
-	@Override
-	public User findUserByUsername(String username) {
-		return null;
-	}
-
-	@Override
-	public User findUserByEmail(String email) {
-		return null;
 	}
 
 }
