@@ -31,6 +31,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	private UserDetailsService userDetailsService;
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
+	// I'm flagging SecurityConfiguration class which UserDetailsService is being used. 
+	// In this case, the annotation @Qualifier("UserDetailsService") refers to UserServiceImpl 
+	// class and not the default UserDetailsService
 	@Autowired
 	public SecurityConfiguration(JwtAuthorizationFilter jwtAuthorizationFilter,
 			JwtAccessDeniedHandler jwtAccessDeniedHandler, JwtAuthenticationEntryPoint jwtAuthenticationEntreyPoint,
@@ -43,13 +46,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
 
-	// There are two methods that I need to override to create the security configuration
-	// in the application.
+    // ========================================================================================
+	// There are two methods from the WebSecurityConfigurerAdapter that I need to override 
+	// to create the security configuration in the application.
+    // ========================================================================================
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		// The AuthenticationManagerBuilder need to tell which UserDetailsService the application
-		// is using. 
+		// The AuthenticationManagerBuilder need to tell which UserDetailsService the application is using. 
+		// Whether it's the DAO (Data Access Object) that comes from the springframework.security.core package
+		// or the one annotated as UserServiceImpl class.
 		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
 	}
 
