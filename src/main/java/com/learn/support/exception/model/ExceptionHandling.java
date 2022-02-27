@@ -33,7 +33,7 @@ public class ExceptionHandling implements ErrorController {
 	
 	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 	private static final String ACCOUNT_LOCKED = "Your account has been locked.";
-	private static final String METHOD_IS_NOT_ALLOWED = "This request is not allowed on this endpoint.";
+	private static final String METHOD_IS_NOT_ALLOWED = "This request is not allowed on this endpoint. Please send a '%s' request.";
 	private static final String INTERNAL_SERVER_ERROR_MSG = "An error occurred while processing the request.";
 	private static final String INCORRECT_CREDENTIALS = "Username / password incorrect. Please try again.";
 	private static final String ACCOUNT_DISABLED = "Your account has been disabled.";
@@ -88,7 +88,7 @@ public class ExceptionHandling implements ErrorController {
 	
 	@ExceptionHandler(IOException.class)
 	public ResponseEntity<HttpResponse> iOException(IOException exception) {
-		LOGGER.error("INTERNAL SERVER ===> " + exception.getMessage());
+		LOGGER.error(exception.getMessage());
 		return createHttpResponse(HttpStatus.INTERNAL_SERVER_ERROR, ERROR_PROCESSING_FILE);
 	}
 	
