@@ -15,8 +15,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 // UserDetails comes from Spring Security - it provides core user information
 // from a security perspective. The UserPrincipal is the user that Spring Security
 // is going to need to do all the work. Because UserDetails is an interface it 
-// already has boilerplate methods that work with Spring Security. 
-// Some I will need to pass the actual the value from the User class so Spring
+// has boilerplate methods that work with Spring Security. 
+// Some I will need to pass the actual value from the User class so Spring
 // Security can map those values and determine if they're correct or not. Other 
 // methods I might need to set a generic value to guarantee the application will 
 // run.
