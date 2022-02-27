@@ -21,8 +21,8 @@ import com.learn.support.utility.JWTTokenProvider;
 
 //=====================================> JwtAuthorizationFilter <=====================================
 // The JwtAuthorizationFilter will stop users from access the application who are not 
-// authenticated if they have a bad token. Filter in this context means, when a request
-// comes into the application is going to go through a series of filters and that's when 
+// authenticated if they have a bad token. Filter in this context, means when a request
+// comes into the application is going to go through a series of filters, and that's when 
 // the application can check if the token is valid, if the username is correct, etc. This
 // way we can either reject the request or accept the request and process it. 
 
