@@ -37,10 +37,16 @@
 		</dependency>
 		
 		<dependency>
-		    <groupId>org.apache.commons</groupId>
+		   	<groupId>org.apache.commons</groupId>
 		    <artifactId>commons-lang3</artifactId>
 		    <version>3.12.0</version>
-		 </dependency>
+		</dependency>
+
+		<dependency>
+		    <groupId>com.google.guava</groupId>
+		    <artifactId>guava</artifactId>
+		    <version>31.1-jre</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
