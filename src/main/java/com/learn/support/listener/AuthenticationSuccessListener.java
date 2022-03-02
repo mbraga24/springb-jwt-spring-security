@@ -18,9 +18,10 @@ public class AuthenticationSuccessListener {
 		this.loginAttemptService = loginAttemptService;
 	}
 	
-	//	When the user successfully logs in event will get back the whole user.
-	//	When trying to get the authentication and principal, the app will return
-	//	the user back.
+	// When the user successfully logs in, AuthenticationSuccessEvent will 
+	// get back the whole user.
+	// When trying to get the authentication and principal, the app will return
+	// the user back.
 	@EventListener
 	public void onAuthenticationSuccess(AuthenticationSuccessEvent event) {
 		Object principal = event.getAuthentication().getPrincipal();
