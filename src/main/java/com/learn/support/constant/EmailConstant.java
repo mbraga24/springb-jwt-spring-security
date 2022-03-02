@@ -7,7 +7,7 @@ public class EmailConstant {
 	
 	public static final String USERNAME = "houseofelinc@gmail.com";
 	public static final String PASSWORD = "dummyemail2@22";
-	public static final String FROM_EMAIL = "houseofelinc@gmail.com";
+	public static final String FROM_EMAIL = "yoursupport@yoursupport.com";
 	public static final String CC_EMAIL = "";
 	public static final String EMAIL_SUBJECT = "Your Support Co.";
 	
@@ -16,6 +16,7 @@ public class EmailConstant {
 	
 	public static final String SMTP_HOST = "mail.smtp.host"; 
 	public static final String SMTP_AUTH = "mail.smtp.auth";
+	
 	public static final String SMTP_PORT = "mail.smtp.port";
 	public static final int DEFAULT_PORT = 465; // Gmail SMTP port (SSL): 465
 	
