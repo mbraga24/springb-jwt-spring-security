@@ -65,7 +65,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 			LOGGER.info(UserImplConstant.RETURNING_FOUND_USER_BY_USERNAME + username);
 			return userPrincipal;
 		}
-		
 	}
 	
 	private void validateLoginAttempt(User user) {
