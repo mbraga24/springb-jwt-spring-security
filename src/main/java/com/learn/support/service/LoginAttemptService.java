@@ -29,6 +29,7 @@ public class LoginAttemptService {
   // String | Integer
   // User_1 | 1 + 1 (number of attempts by the user)
 	
+	// ===> Should I consider blocking the IP Address?
 	public LoginAttemptService() {
 		super();
 		loginAttemptCache = CacheBuilder.newBuilder().expireAfterWrite(15, TimeUnit.MINUTES)
