@@ -1,7 +1,5 @@
 package com.learn.support.listener;
 
-import java.util.concurrent.ExecutionException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
@@ -24,13 +22,13 @@ public class AuthenticationFailureListener {
 	
 	// =====> .getPrincipal()
 	// The identity of the principal being authenticated. In the case of an 
-	// authenticationrequest with username and password, this would be the 
-	// username. Callers areexpected to populate the principal for an 
+	// authentication request with username and password, this would be the 
+	// username. Callers are expected to populate the principal for an 
 	// authentication request. Return the Principal being authenticated 
 	// or the authenticated principal after authentication.
 	
 	@EventListener
-	public void onAuthenticationFailure(AuthenticationFailureBadCredentialsEvent event) throws ExecutionException {
+	public void onAuthenticationFailure(AuthenticationFailureBadCredentialsEvent event) {
 		Object principal = event.getAuthentication().getPrincipal();
 		if (principal instanceof String) {
 			String username = (String) event.getAuthentication().getPrincipal();
