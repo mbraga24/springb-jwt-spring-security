@@ -30,9 +30,12 @@ public class AuthenticationFailureListener {
 	
 	@EventListener
 	public void onAuthenticationFailure(AuthenticationFailureBadCredentialsEvent event) {
+		// Object principal = event.getAuthentication().getPrincipal();
 		Object principal = event.getAuthentication();
-		System.out.println("Returns a String representation of this EventObject.");
-		System.out.println(principal.toString());
+		// ---------------------------------------------------------------------------
+		// System.out.println("Returns a String representation of this EventObject.");
+		// System.out.println(principal.toString());
+		// ---------------------------------------------------------------------------
 		principal = ((Authentication) principal).getPrincipal();
 		if (principal instanceof String) {
 			String username = (String) event.getAuthentication().getPrincipal();
