@@ -1,0 +1,40 @@
+package com.learn.support.listener;
+
+import java.util.concurrent.ExecutionException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
+import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
+import org.springframework.stereotype.Component;
+
+import com.learn.support.service.LoginAttemptService;
+
+@Component
+public class AuthenticationFailureListener {
+
+	private LoginAttemptService loginAttemptService;
+	
+	@Autowired
+	public AuthenticationFailureListener(LoginAttemptService loginAttemptService) {
+		this.loginAttemptService = loginAttemptService;
+	}
+	// =====> .getAuthentication()
+	// Getters for the Authentication request that caused the event. Returns
+	// the authentication request.
+	
+	// =====> .getPrincipal()
+	// The identity of the principal being authenticated. In the case of an 
+	// authenticationrequest with username and password, this would be the 
+	// username. Callers areexpected to populate the principal for an 
+	// authentication request. Return the Principal being authenticated 
+	// or the authenticated principal after authentication.
+	
+	@EventListener
+	public void onAuthenticationFailure(AuthenticationFailureBadCredentialsEvent event) throws ExecutionException {
+		Object principal = event.getAuthentication().getPrincipal();
+		if (principal instanceof String) {
+			String username = (String) event.getAuthentication().getPrincipal();
+			loginAttemptService.addUserToLoginAttemptCache(username); // if user fails to login it will be added to the cache
+		}
+	}
+}
