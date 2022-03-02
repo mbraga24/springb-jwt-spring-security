@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 			user.setLastLoginDateDisplay(user.getLastLoginDate());
 			user.setLastLoginDate(new Date());
 			userRepository.save(user);
-			UserPrincipal userPrincipal = new UserPrincipal(user); // because UserPrincipal extends UserDetails I can return userPrincipal as UserDetails
+			UserPrincipal userPrincipal = new UserPrincipal(user); // because UserPrincipal implements UserDetails I can return userPrincipal as UserDetails
 			LOGGER.info(UserImplConstant.RETURNING_FOUND_USER_BY_USERNAME + username);
 			return userPrincipal;
 		}
