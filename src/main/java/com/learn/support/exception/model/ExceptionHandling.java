@@ -32,7 +32,7 @@ import com.learn.support.domain.HttpResponse;
 public class ExceptionHandling implements ErrorController {
 	
 	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
-	private static final String ACCOUNT_LOCKED = "Your account has been locked.";
+	private static final String ACCOUNT_LOCKED = "Your account has been locked. Please contact your supervisor.";
 	private static final String METHOD_IS_NOT_ALLOWED = "This request is not allowed on this endpoint. Please send a '%s' request.";
 	private static final String INTERNAL_SERVER_ERROR_MSG = "An error occurred while processing the request.";
 	private static final String INCORRECT_CREDENTIALS = "Username / password incorrect. Please try again.";
