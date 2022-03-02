@@ -62,8 +62,8 @@ public class UserPrincipal implements UserDetails {
 		return this.user.getUsername();
 	}
 
-	// I didn't define this field so I don't have this field in 
-	// the user class. When it's set to "true", the app won't fail 
+	// I didn't define this field in the user class. 
+	// When it's set to "true", the app won't fail 
 	// when tries to log in
 	@Override
 	public boolean isAccountNonExpired() {
@@ -75,8 +75,8 @@ public class UserPrincipal implements UserDetails {
 		return this.user.isNotLocked();
 	}
 
-	// I didn't define this field so I don't have this field in 
-	// the user class. When it's set to "true", the app won't fail 
+	// I didn't define this field in the user class.
+	// When it's set to "true", the app won't fail 
 	// when tries to log in
 	@Override
 	public boolean isCredentialsNonExpired() {
