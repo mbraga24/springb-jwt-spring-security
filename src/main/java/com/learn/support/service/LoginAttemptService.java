@@ -1,5 +1,6 @@
 package com.learn.support.service;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.stereotype.Service;
@@ -37,5 +38,21 @@ public class LoginAttemptService {
 					}
 				});
 	}
+	
+	// Remove user from the cache
+	public void evictUserFromLoginAttemptCache(String username) {
+		loginAttemptCache.invalidate(username);
+	}
+	
+	// Increment the number of attempts from user to the cache by one
+	public void addUserToLoginAttemptCache(String username) throws ExecutionException {
+		int attempts = 0;
+		attempts = ATTEMPT_INCREMENT + loginAttemptCache.get(username);
+		loginAttemptCache.put(username, attempts);
+	}
 
+	// Check if user's number of attempts has exceeded the maximum number of attempts
+	public boolean hasExceededMaxAttempts(String username) throws ExecutionException {
+		return loginAttemptCache.get(username) >= MAXIMUM_NUMBER_OF_ATTEMPTS;
+	}
 }
