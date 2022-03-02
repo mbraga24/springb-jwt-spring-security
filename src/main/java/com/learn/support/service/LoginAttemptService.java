@@ -45,14 +45,23 @@ public class LoginAttemptService {
 	}
 	
 	// Increment the number of attempts from user to the cache by one
-	public void addUserToLoginAttemptCache(String username) throws ExecutionException {
+	public void addUserToLoginAttemptCache(String username) {
 		int attempts = 0;
-		attempts = ATTEMPT_INCREMENT + loginAttemptCache.get(username);
-		loginAttemptCache.put(username, attempts);
+		try {
+			attempts = ATTEMPT_INCREMENT + loginAttemptCache.get(username);
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+		loginAttemptCache.put(username, attempts);			
 	}
 
 	// Check if user's number of attempts has exceeded the maximum number of attempts
-	public boolean hasExceededMaxAttempts(String username) throws ExecutionException {
-		return loginAttemptCache.get(username) >= MAXIMUM_NUMBER_OF_ATTEMPTS;
+	public boolean hasExceededMaxAttempts(String username) {
+		try {
+			return loginAttemptCache.get(username) >= MAXIMUM_NUMBER_OF_ATTEMPTS;			
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 }
