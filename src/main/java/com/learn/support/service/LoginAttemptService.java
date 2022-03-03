@@ -34,6 +34,17 @@ public class LoginAttemptService {
 	public LoginAttemptService() {
 		super();
 		
+		// -> newBuilder()
+		// Constructs a new CacheBuilder instance with default settings, including strong keys, 
+		// strong values, and no automatic eviction of any kind.
+		
+		// -> build(CacheLoader<? super K1,V1> loader)
+		// Builds a cache, which either returns an already-loaded value for a given key or 
+		// atomically computes or retrieves it using the supplied CacheLoader.
+		
+		// -> CacheLoader
+		// Computes or retrieves values, based on a key, for use in populating a LoadingCache.
+		
 		// =====> CODE 1:
 		// loginAttemptCache = CacheBuilder.newBuilder().expireAfterWrite(15, TimeUnit.MINUTES)
 		//  .maximumSize(100).build(new CacheLoader<String, Integer>(){
@@ -42,7 +53,7 @@ public class LoginAttemptService {
 		//   }
 		// });
 		
-		// =====> CODE 2:
+		// =====>> CODE 2:
 		loginAttemptCache = CacheBuilder.from(SPEC).build(new CacheLoader<String, Integer>(){
 			public Integer load(String key) {
 				return 0;
@@ -52,18 +63,18 @@ public class LoginAttemptService {
 	
 	// Remove user from the cache
 	public void evictUserFromLoginAttemptCache(String username) {
-		loginAttemptCache.invalidate(username);
+		loginAttemptCache.invalidate(username); // invalidate(): Discards any cached value for key key.
 	}
 	
 	// Increment the number of attempts from user to the cache by one
 	public void addUserToLoginAttemptCache(String username) {
 		int attempts = 0;
 		try {
-			attempts = ATTEMPT_INCREMENT + loginAttemptCache.get(username);
+			attempts = ATTEMPT_INCREMENT + loginAttemptCache.get(username); // get(): Returns the value associated with key in this cache, obtaining that value from valueLoader if necessary.
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
-		loginAttemptCache.put(username, attempts);			
+		loginAttemptCache.put(username, attempts); // put(): Associates value with key in this cache.	
 	}
 
 	// Check if user's number of attempts has exceeded the maximum number of attempts
