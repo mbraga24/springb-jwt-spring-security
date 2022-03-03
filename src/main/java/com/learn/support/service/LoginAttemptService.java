@@ -16,15 +16,17 @@ import com.google.common.cache.LoadingCache;
 // login, the logic will check how many times they have already tried and lock
 // the user's account if the user reaches the maximum number of attempts. 
 // 
-// ** In case they attempt a few times and login successfully we will remove the
-// initial failed number of attempts **
+// In case the user attempt a few times and login successfully the app will remove 
+// the initial failed number of attempts
+//
+// ** Extension: google guava **
 //===============================================================================
 
 @Service
 public class LoginAttemptService {
 	private static final int MAXIMUM_NUMBER_OF_ATTEMPTS = 5;
 	private static final int ATTEMPT_INCREMENT = 1;
-	private static final String SPEC = "maximumSize=1000,expireAfterWrite=1m";
+	private static final String SPEC = "maximumSize=1000,expireAfterWrite=15m"; // maximumSize ??
 	private LoadingCache<String, Integer> loginAttemptCache;
 
   // String | Integer
