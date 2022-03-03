@@ -3,6 +3,7 @@ package com.learn.support.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -38,12 +39,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	private UserRepository userRepository;
 	private BCryptPasswordEncoder passwordEncoder;
 	private LoginAttemptService loginAttemptService;
+	private EmailService emailService; 
 	
 	@Autowired
-	public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, LoginAttemptService loginAttemptService) {
+	public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, 
+			LoginAttemptService loginAttemptService, EmailService emailService) {
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.loginAttemptService = loginAttemptService;
+		this.emailService = emailService;
 	}
 	
 	// The loadUserByUsername method gets called whenever Spring Security is trying to check the
@@ -80,7 +84,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
-	public User register(String firstName, String lastName, String username, String email) throws UsernameExistException, UserNotFoundException, EmailExistException {
+	public User register(String firstName, String lastName, 
+			String username, String email) throws UsernameExistException, UserNotFoundException, EmailExistException {
 		validateNewUsernameAndEmail(StringUtils.EMPTY, username, email);
 		User user = new User();
 		user.setUserId(generateUserId());
@@ -98,7 +103,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		user.setAuthorities(Role.ROLE_USER.getAuthorities());
 		user.setProfileImageUrl(getTemporaryProfileImageUrl().toString());
 		userRepository.save(user); // call userRepository to save the user in the database
-		LOGGER.info("New user password: " + password);
+		emailService.sendNewPasswordEmail(firstName, lastName, password, email);
 		return user;
 	}
 
