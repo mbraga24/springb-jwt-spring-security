@@ -3,9 +3,7 @@ package com.learn.support.service.impl;
 import java.util.Date;
 import java.util.List;
 
-import javax.mail.MessagingException;
 import javax.transaction.Transactional;
-
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
