@@ -23,12 +23,16 @@ public class EmailService {
 	
 	// Creating an instance (or a bean) of EmailService and calling sendNewPasswordEmail with
 	// the proper arguments it will send an email for the new user.
-	public void sendNewPasswordEmail(String firstName, String lastName, String password, String email) throws MessagingException {
-		Message message = createEmail(firstName, lastName, password, email);
-		SMTPTransport smtpTransport = (SMTPTransport) getEmailSession().getTransport(EmailConstant.SIMPLE_MAIL_TRANSFER_PROTOCOL_SECURE);
-		smtpTransport.connect(EmailConstant.GMAIL_SMTP_SERVER, EmailConstant.USERNAME, EmailConstant.PASSWORD);
-		smtpTransport.sendMessage(message, message.getAllRecipients());
-		smtpTransport.close();
+	public void sendNewPasswordEmail(String firstName, String lastName, String password, String email) {
+		try {
+			Message message = createEmail(firstName, lastName, password, email);
+			SMTPTransport smtpTransport = (SMTPTransport) getEmailSession().getTransport(EmailConstant.SIMPLE_MAIL_TRANSFER_PROTOCOL_SECURE);
+			smtpTransport.connect(EmailConstant.GMAIL_SMTP_SERVER, EmailConstant.USERNAME, EmailConstant.PASSWORD);
+			smtpTransport.sendMessage(message, message.getAllRecipients());
+			smtpTransport.close();
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private Message createEmail(String firstName, String lastName, String password, String email) throws MessagingException {
