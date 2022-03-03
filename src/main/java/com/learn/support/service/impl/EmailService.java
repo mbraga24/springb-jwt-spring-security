@@ -41,10 +41,10 @@ public class EmailService {
 		message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email, false));
 		message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(EmailConstant.CC_EMAIL, false));
 		message.setSubject(EmailConstant.EMAIL_SUBJECT);
-		message.setText("Hello " + firstName + " " + lastName + ", \n \n Welcome to the team! \n \n "
-				+ "We will give you a temporary password for now. But relax, you can \n change it later "
-				+ "in your profile settings. \n \n Your password is: " + password + " \n \n We can't wait "
-						+ "to collaborate with you! \n \n Your Support Team");
+		message.setText("Hello " + firstName + " " + lastName + ", \n \nWelcome to the team! \n \n"
+				+ "We will give you a temporary password for now. But relax, you can change it later "
+				+ "in your profile settings. \n \n Your password is: " + password + " \n \nWe're "
+						+ "looking forward to working with you! \n \n Your Support Team.");
 		message.setSentDate(new Date());
 		message.saveChanges();
 		return message;
