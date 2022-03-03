@@ -6,7 +6,7 @@ public class EmailConstant {
 	public static final String SIMPLE_MAIL_TRANSFER_PROTOCOL_SECURE = "smtps"; 
 	
 	public static final String USERNAME = "houseofelinc@gmail.com";
-	public static final String PASSWORD = "dummyemail2@22";
+	public static final String PASSWORD = "Dummyemail2@22";
 	public static final String FROM_EMAIL = "yoursupport@yoursupport.com";
 	public static final String CC_EMAIL = "";
 	public static final String EMAIL_SUBJECT = "Your Support Co.";
