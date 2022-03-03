@@ -1,7 +1,7 @@
 package com.learn.support.service;
 
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
+//import java.util.concurrent.TimeUnit;
 
 import org.springframework.stereotype.Service;
 
@@ -24,6 +24,7 @@ import com.google.common.cache.LoadingCache;
 public class LoginAttemptService {
 	private static final int MAXIMUM_NUMBER_OF_ATTEMPTS = 5;
 	private static final int ATTEMPT_INCREMENT = 1;
+	private static final String SPEC = "maximumSize=1000,expireAfterWrite=15m";
 	private LoadingCache<String, Integer> loginAttemptCache;
 
   // String | Integer
@@ -32,12 +33,21 @@ public class LoginAttemptService {
 	// ===> Should I consider blocking the IP Address?
 	public LoginAttemptService() {
 		super();
-		loginAttemptCache = CacheBuilder.newBuilder().expireAfterWrite(15, TimeUnit.MINUTES)
-				.maximumSize(100).build(new CacheLoader<String, Integer>(){
-					public Integer load(String key) {
-						return 0;
-					}
-				});
+		// =====> CODE 1:
+		// loginAttemptCache = CacheBuilder.newBuilder().expireAfterWrite(15, TimeUnit.MINUTES)
+		//  .maximumSize(100).build(new CacheLoader<String, Integer>(){
+		//   public Integer load(String key) {
+		//				return 0;
+		//   }
+		// });
+		
+		// =====> CODE 2:
+		loginAttemptCache = CacheBuilder.from(SPEC)
+				.build(new CacheLoader<String, Integer>(){
+				public Integer load(String key) {
+				return 0;
+			}
+		});
 	}
 	
 	// Remove user from the cache
