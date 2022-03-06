@@ -2,6 +2,8 @@ package com.learn.support.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.learn.support.domain.User;
 import com.learn.support.exception.model.EmailExistException;
 import com.learn.support.exception.model.UserNotFoundException;
@@ -16,4 +18,14 @@ public interface UserService {
 	User findUserByUsername(String username);
 
 	User findUserByEmail(String email);
+	
+	User addNewUser(String firstName, String lastName, String username, String email, String role, boolean isNonLocked, boolean isActive);
+
+	User updateUser(String currentUsername, String firstName, String lastName, String username, String email, String role, boolean isNonLocked, boolean isActive);
+	
+	void deleteUser(long id);
+	
+	void resetPassword(String email);
+	
+	User updateProfileImage(String username, MultipartFile profileImage);
 }
