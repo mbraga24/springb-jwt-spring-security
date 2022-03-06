@@ -129,7 +129,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		user.setNotLocked(true);
 		user.setRole(Role.ROLE_USER.name()); // setRole() takes a String. ROLE_USER is an enum and name() method will convert the enum into a String.
 		user.setAuthorities(Role.ROLE_USER.getAuthorities());
-		user.setProfileImageUrl(getTemporaryProfileImageUrl().toString());
+		user.setProfileImageUrl(getTemporaryProfileImageUrl(username).toString());
 		userRepository.save(user); // call userRepository to save the user in the database
 		emailService.sendNewPasswordEmail(firstName, lastName, password, email);
 		// LOGGER.info("SEND A MESSAGE TO THE CONSOLE");
@@ -138,7 +138,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	
 	@Override
 	public User addNewUser(String firstName, String lastName, String username, String email, String role,
-			boolean isNonLocked, boolean isActive) {
+			boolean isNonLocked, boolean isActive) throws UsernameExistException, UserNotFoundException, EmailExistException {
 		validateNewUsernameAndEmail(StringUtils.EMPTY, username, email);
 		User user = new User();
 		user.setUserId(generateUserId());
@@ -160,18 +160,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		return user;
 	}
 
-	private Role getRoleEnumName(String role) {
-		return null;
-	}
-	
-	private void saveProfileImage(User user, MultipartFile profileImage) {
-	}
-
 	@Override
 	public User updateUser(String currentUsername, String firstName, String lastName, String username, String email,
-			String role, boolean isNonLocked, boolean isActive) {
-		// TODO Auto-generated method stub
-		return null;
+			String role, boolean isNonLocked, boolean isActive) throws UsernameExistException, UserNotFoundException, EmailExistException {
+		User currentUser = validateNewUsernameAndEmail(currentUsername, username, email);
+		currentUser.setFirstName(firstName);
+		currentUser.setLastName(lastName);
+		currentUser.setJoinDate(new Date()); // ?
+		currentUser.setUsername(username);
+		currentUser.setEmail(email);
+		currentUser.setActive(true);
+		currentUser.setNotLocked(true);
+		userRepository.save(currentUser); 
+		saveProfileImage(currentUser, profileImage);
+		return currentUser;		
 	}
 
 	@Override
@@ -184,13 +186,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	public User updateProfileImage(String username, MultipartFile profileImage) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-	
-	private Object getTemporaryProfileImageUrl(String username) {
-		// ServletUriComponentsBuilder will return whatever the URL is for the service.
-		// e.g.: if the application is deployed to Google.com the based URL will be 
-		// www.google.com/...
-		return ServletUriComponentsBuilder.fromCurrentContextPath().path(FileConstant.DEFAULT_USER_IMAGE_PATH).toUriString();
 	}
 	
 	@Override
@@ -207,6 +202,25 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	public User findUserByEmail(String email) {
 		return userRepository.findUserByEmail(email);
 	}
+	
+	@Override
+	public void resetPassword(String email) {
+		// TODO Auto-generated method stub
+	}
+	
+	private Role getRoleEnumName(String role) {
+		return null;
+	}
+	
+	private void saveProfileImage(User user, MultipartFile profileImage) {
+	}
+	
+	private Object getTemporaryProfileImageUrl(String username) {
+		// ServletUriComponentsBuilder will return whatever the URL is for the service.
+		// e.g.: if the application is deployed to Google.com the based URL will be 
+		// www.google.com/...
+		return ServletUriComponentsBuilder.fromCurrentContextPath().path(FileConstant.DEFAULT_USER_IMAGE_PATH + username).toUriString();
+	}
 
 	private String encodePassword(String password) {
 		return passwordEncoder.encode(password);
@@ -218,11 +232,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	private String generateUserId() {
 		return RandomStringUtils.randomNumeric(10);
-	}
-
-	@Override
-	public void resetPassword(String email) {
-		// TODO Auto-generated method stub
 	}
 
 }
