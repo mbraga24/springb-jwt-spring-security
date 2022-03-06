@@ -194,8 +194,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
-	public User updateProfileImage(String username, MultipartFile profileImage) {
-		return null;
+	public User updateProfileImage(String username, MultipartFile profileImage) throws UsernameExistException, UserNotFoundException, EmailExistException {
+		User user = validateNewUsernameAndEmail(username, null, null);
+		saveProfileImage(user, profileImage);
+		return user;
 	}
 	
 	@Override
