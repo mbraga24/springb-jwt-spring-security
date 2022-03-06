@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.learn.support.domain.User;
 import com.learn.support.exception.model.EmailExistException;
+import com.learn.support.exception.model.EmailNotFoundException;
 import com.learn.support.exception.model.UserNotFoundException;
 import com.learn.support.exception.model.UsernameExistException;
 
@@ -25,7 +26,7 @@ public interface UserService {
 	
 	void deleteUser(long id);
 	
-	void resetPassword(String email);
+	void resetPassword(String email) throws EmailNotFoundException;
 	
-	User updateProfileImage(String username, MultipartFile profileImage);
+	User updateProfileImage(String username, MultipartFile profileImage) throws UsernameExistException, UserNotFoundException, EmailExistException;
 }
