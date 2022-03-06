@@ -25,6 +25,7 @@ import com.learn.support.domain.User;
 import com.learn.support.domain.UserPrincipal;
 import com.learn.support.enumeration.Role;
 import com.learn.support.exception.model.EmailExistException;
+import com.learn.support.exception.model.EmailNotFoundException;
 import com.learn.support.exception.model.UserNotFoundException;
 import com.learn.support.exception.model.UsernameExistException;
 import com.learn.support.repository.UserRepository;
@@ -166,25 +167,34 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		User currentUser = validateNewUsernameAndEmail(currentUsername, username, email);
 		currentUser.setFirstName(firstName);
 		currentUser.setLastName(lastName);
-		currentUser.setJoinDate(new Date()); // ?
 		currentUser.setUsername(username);
 		currentUser.setEmail(email);
 		currentUser.setActive(true);
 		currentUser.setNotLocked(true);
 		userRepository.save(currentUser); 
-		saveProfileImage(currentUser, profileImage);
+//		saveProfileImage(currentUser, profileImage);
 		return currentUser;		
 	}
 
 	@Override
 	public void deleteUser(long id) {
-		// TODO Auto-generated method stub
-		
+		userRepository.deleteById(id);
+	}
+	
+	@Override
+	public void resetPassword(String email) throws EmailNotFoundException {
+		User user = userRepository.findUserByEmail(email);
+		if (user == null) {
+			throw new EmailNotFoundException(UserImplConstant.NO_USER_FOUND_BY_EMAIL + email);
+		} 
+		String password = generatePassword();
+		user.setPassword(encodePassword(password));
+		userRepository.save(user);
+		emailService.sendNewPasswordEmail(user.getFirstName(), user.getLastName(), password, user.getEmail());
 	}
 
 	@Override
 	public User updateProfileImage(String username, MultipartFile profileImage) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
@@ -201,11 +211,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	@Override
 	public User findUserByEmail(String email) {
 		return userRepository.findUserByEmail(email);
-	}
-	
-	@Override
-	public void resetPassword(String email) {
-		// TODO Auto-generated method stub
 	}
 	
 	private Role getRoleEnumName(String role) {
