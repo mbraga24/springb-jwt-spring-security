@@ -66,21 +66,25 @@ public class ExceptionHandling implements ErrorController {
 		return createHttpResponse(HttpStatus.UNAUTHORIZED, exception.getMessage());
 	}
 	
+	// com.learn.support.exception.model
 	@ExceptionHandler(EmailExistException.class)
 	public ResponseEntity<HttpResponse> emailExistException(EmailExistException exception) {
 		return createHttpResponse(HttpStatus.BAD_REQUEST, exception.getMessage());
 	}
 	
+	// com.learn.support.exception.model
 	@ExceptionHandler(UsernameExistException.class)
 	public ResponseEntity<HttpResponse> usernameExistException(UsernameExistException exception) {
 		return createHttpResponse(HttpStatus.BAD_REQUEST, exception.getMessage());
 	}
 	
+	// com.learn.support.exception.model
 	@ExceptionHandler(EmailNotFoundException.class)
 	public ResponseEntity<HttpResponse> emailNotFoundException(EmailNotFoundException exception) {
 		return createHttpResponse(HttpStatus.BAD_REQUEST, exception.getMessage());
 	}
 	
+	// com.learn.support.exception.model
 	@ExceptionHandler(UserNotFoundException.class)
 	public ResponseEntity<HttpResponse> userNotFoundException(UserNotFoundException exception) {
 		return createHttpResponse(HttpStatus.BAD_REQUEST, exception.getMessage());
