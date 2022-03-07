@@ -22,7 +22,7 @@ import com.learn.support.filter.JwtAuthorizationFilter;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true) // will allow security at a method level instead of just having at this class level.
+@EnableGlobalMethodSecurity(prePostEnabled = true) // will allow security at method level instead of just having it at this class level.
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	private JwtAuthorizationFilter jwtAuthorizationFilter;
