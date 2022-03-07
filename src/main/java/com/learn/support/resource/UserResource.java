@@ -81,7 +81,7 @@ public class UserResource extends ExceptionHandling {
 	}
 	
 	@PostMapping("/update")
-	public ResponseEntity<User> update(@RequestParam("currentUsername") String currentUsername,
+	public ResponseEntity<User> updateUser(@RequestParam("currentUsername") String currentUsername,
 			                           @RequestParam("firstName") String firstName,
 			                           @RequestParam("lastName") String lastName,
                                        @RequestParam("email") String email,
