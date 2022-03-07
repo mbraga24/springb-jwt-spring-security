@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,7 +34,8 @@ import com.learn.support.utility.JWTTokenProvider;
 @RequestMapping(path = { "/", "/user" })
 public class UserResource extends ExceptionHandling {
 
-	private static final String RESET_CONFIRMED_EMAIL_SENT = "You're all set! Your password reset is confirmed. An email with your new password was sent to: ";
+	private static final String USER_DELETED_SUCCESS = "That user was deleted successfully.";
+	private static final String PASSWORD_RESET_EMAIL_SENT = "You're all set! Your password reset is confirmed. An email with your new password was sent to: ";
 	private UserService userService;
 	private AuthenticationManager authenticationManager;
 	private JWTTokenProvider jwtTokenProvider;
@@ -107,7 +110,14 @@ public class UserResource extends ExceptionHandling {
 	@GetMapping("/resetPassword/{email}")
 	public ResponseEntity<HttpResponse> resetPassword(@PathVariable("email") String email) throws EmailNotFoundException {
 		userService.resetPassword(email);
-		return response(HttpStatus.OK, RESET_CONFIRMED_EMAIL_SENT + email);
+		return response(HttpStatus.OK, PASSWORD_RESET_EMAIL_SENT + email);
+	}
+	
+	@DeleteMapping("/delete/{id}")
+	@PreAuthorize("hasAuthority('user:delete')") // For someone to be able to delete an user, they will have to have the user:delete authority.
+	public ResponseEntity<HttpResponse> deleteUser(@PathVariable("id") long id) {
+		userService.deleteUser(id);
+		return response(HttpStatus.OK, USER_DELETED_SUCCESS);
 	}
 	
 	private ResponseEntity<HttpResponse> response(HttpStatus httpStatus, String message) {
