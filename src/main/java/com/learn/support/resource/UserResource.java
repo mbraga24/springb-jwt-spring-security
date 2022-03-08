@@ -122,6 +122,12 @@ public class UserResource extends ExceptionHandling {
 		return response(HttpStatus.NO_CONTENT, USER_DELETED_SUCCESS); // HttpStatus.NO_CONTENT -> (204, Series.SUCCESSFUL, "No Content")
 	}
 	
+	/**
+	 * @RequestParam: Another approach:
+	 * @RequestParam(value = "profileImage", required = false): When 'required' is set to false for @RequestParam, 
+	 * the param will be optional. This approach will allow me to save any other user information whether that
+	 * param is passed or not.
+	*/
 	@PostMapping("/updateProfileImage")
 	public ResponseEntity<User> updateProfileImage(@RequestParam("username") String username, 
 			                                       @RequestParam(value = "profileImage") MultipartFile profileImage) throws UsernameExistException, UserNotFoundException, IOException, EmailExistException {
