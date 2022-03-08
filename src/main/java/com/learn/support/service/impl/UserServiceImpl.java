@@ -58,8 +58,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		this.emailService = emailService;
 	}
 	
-	// The loadUserByUsername method gets called whenever Spring Security is trying to check the
-	// authentication of the user. The method needs to be overridden. 	
+	/**
+	* The loadUserByUsername method gets called whenever Spring Security is trying to check the
+	* authentication of the user. The method needs to be overridden. 	
+	*/
 	@SuppressWarnings("static-access")
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -160,8 +162,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		userRepository.deleteById(id);
 	}
 	
-	// resetPassword method is temporarily renewing the user's password by generating a 
-	// random password. 
+	/**
+	* resetPassword() method is temporarily renewing the user's password by generating a 
+	* random password. 
+	* @param email the user email
+	*/
 	@Override
 	public void resetPassword(String email) throws EmailNotFoundException {
 		User user = userRepository.findUserByEmail(email);
@@ -212,9 +217,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 			// user/home/support/user/username.jpg 
 			Files.deleteIfExists(Paths.get(userFolder + user.getUsername() + FileConstant.DOT + FileConstant.JPG_EXTENSION));
 			
-			// REPLACE_EXISTING field is replacing an existing picture for one of the same name that.
-			// ** I could use either .deleteIfExists or REPLACE_EXISTING - I'm making sure the old picture will be deleted or
-			// replaced **
+			/**
+			 * More Details -
+			 * .resolve(): REPLACE_EXISTING field in the resolve() method is replacing an existing picture for one of the 
+			 * same name.
+			 * I could use either .deleteIfExists or REPLACE_EXISTING - I'm making sure the old picture will be deleted or
+			 * replaced.
+			 */
 			Files.copy(profileImage.getInputStream(), userFolder.resolve(user.getUsername() + FileConstant.DOT + FileConstant.JPG_EXTENSION), REPLACE_EXISTING);
 			user.setProfileImageUrl(setProfileImageUrl(user.getUsername()));
 			userRepository.save(user);
@@ -228,9 +237,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	private Object getTemporaryProfileImageUrl(String username) {
-		// ServletUriComponentsBuilder will return whatever the URL is for the service.
-		// e.g.: if the application is deployed to Google.com the based URL will be 
-		// www.google.com/...
+		/**
+		 * More Details -
+		 * ServletUriComponentsBuilder will return whatever the URL is for the service.
+		 * e.g.: if the application is deployed to Google.com, the based URL will be
+		 * www.google.com/
+		 */
 		return ServletUriComponentsBuilder.fromCurrentContextPath().path(FileConstant.DEFAULT_USER_IMAGE_PATH + username).toUriString();
 	}
 
