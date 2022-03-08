@@ -214,14 +214,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 				Files.createDirectories(userFolder);
 				LOGGER.info(FileConstant.DIRECTORY_CREATED + userFolder);
 			}
-			// user/home/support/user/username.jpg 
+			// user/home/support/user/username/username.jpg 
 			Files.deleteIfExists(Paths.get(userFolder + user.getUsername() + FileConstant.DOT + FileConstant.JPG_EXTENSION));
 			
 			/**
 			 * More Details -
+			 * .copy(): Copies all bytes from an input stream to a file.
+			 * .getInputStream(): Return an InputStream to read the contents of the file from. Returns the contents 
+			 * of the file as stream, or an empty stream if empty.
 			 * .resolve(): REPLACE_EXISTING field in the resolve() method is replacing an existing picture for one of the 
-			 * same name.
-			 * I could use either .deleteIfExists or REPLACE_EXISTING - I'm making sure the old picture will be deleted or
+			 * same name. I could've used either .deleteIfExists or REPLACE_EXISTING - I'm making sure the old picture will be deleted or
 			 * replaced.
 			 */
 			Files.copy(profileImage.getInputStream(), userFolder.resolve(user.getUsername() + FileConstant.DOT + FileConstant.JPG_EXTENSION), REPLACE_EXISTING);
