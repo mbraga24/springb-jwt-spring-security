@@ -61,6 +61,7 @@ spring:
     url: jdbc:mysql://localhost:3306/support
     username: root
     password: mysqldb
+```
 ````
 
 ## Security
