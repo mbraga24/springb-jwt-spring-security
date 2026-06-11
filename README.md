@@ -1,4 +1,3 @@
-````md
 # Spring Boot JWT Spring Security
 
 A Spring Boot application that demonstrates user authentication and authorization using Spring Security and JSON Web Tokens (JWT).
@@ -35,7 +34,7 @@ This project implements a user management API with login, registration, JWT-base
 ## API Endpoints
 
 | Method | Endpoint | Description |
-|---|---|---|
+|----------|----------|----------|
 | POST | `/user/login` | Authenticates a user and returns a JWT token in the response header |
 | POST | `/user/register` | Registers a new user |
 | POST | `/user/add` | Adds a new user |
@@ -62,7 +61,6 @@ spring:
     username: root
     password: mysqldb
 ```
-````
 
 ## Security
 
