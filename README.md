@@ -1,5 +1,3 @@
-Based on the repo, here’s a clean `README.md` you can use:
-
 ````md
 # Spring Boot JWT Spring Security
 
