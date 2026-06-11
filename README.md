@@ -63,44 +63,6 @@ spring:
     password: mysqldb
 ````
 
-## Running the Application
-
-1. Clone the repository:
-
-```bash
-git clone https://github.com/mbraga24/springb-jwt-spring-security.git
-```
-
-2. Navigate into the project:
-
-```bash
-cd springb-jwt-spring-security
-```
-
-3. Make sure MySQL is running and create the database:
-
-```sql
-CREATE DATABASE support;
-```
-
-4. Run the application:
-
-```bash
-./mvnw spring-boot:run
-```
-
-On Windows:
-
-```bash
-mvnw.cmd spring-boot:run
-```
-
-5. The API will run on:
-
-```bash
-http://localhost:8081
-```
-
 ## Security
 
 The application uses Spring Security with JWT authentication. After a successful login, the JWT token is returned in the response header and should be included in future requests that require authentication.
@@ -130,8 +92,3 @@ This project was built as a learning project to practice Spring Boot security co
 ## Author
 
 Marlon Braga
-
-```
-
-One important improvement: don’t keep `jwt.secret: "password"` in a real project. Move it to an environment variable before using this beyond local practice.
-```
